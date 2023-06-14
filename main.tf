@@ -37,6 +37,9 @@ resource "aws_cognito_user_pool_client" "example" {
   supported_identity_providers = ["COGNITO"]
   allowed_oauth_flows = ["client_credentials"]
   generate_secret = "true"
+  allowed_oauth_flows_user_pool_client = ["code"]
+  allowed_oauth_flows_user_pool_client_user_password = true
+  allowed_oauth_flows_user_pool_client_refresh_token = true
   prevent_user_existence_errors = "ENABLED"
   allowed_oauth_scopes = [aws_cognito_resource_server.resource.scope_identifiers[0]]
 }
