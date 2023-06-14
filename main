@@ -1,0 +1,54 @@
+provider "aws" {
+  region = "us-east-1" # Update with your desired AWS region
+}
+
+resource "aws_cognito_user_pool" "pool" {
+  name = "pool"
+}
+
+resource "aws_cognito_user_pool_client" "example" {
+  name                        = "example-client"
+  user_pool_id                = aws_cognito_user_pool.pool.id
+  generate_secret             = true
+  allowed_oauth_flows         = ["code"]
+  allowed_oauth_scopes        = ["openid"]
+#  callback_urls               = ["http://example.com/callback"]
+  allowed_oauth_flows_user_pool_client = true
+  explicit_auth_flows         = ["ALLOW_REFRESH_TOKEN_AUTH"]
+
+  supported_identity_providers = ["COGNITO"]
+
+ # app_type                    = "OTHER"
+ # token_validity_units        = "hours"
+ # token_validity              = 24
+
+}
+
+/*
+resource "null_resource" "create_cognito_users" {
+  # Optional: Set a dependency on other resources if required
+  depends_on = [aws_cognito_user_pool.pool]
+
+  # Provisioner block contains the commands to be executed locally
+  provisioner "local-exec" {
+    command = <<-EOT
+      aws cognito-idp admin-create-user --user-pool-id ${aws_cognito_user_pool.pool.id} --username john@example.com --temporary-password 1qaz@WSX
+      aws cognito-idp admin-set-user-password --user-pool-id ${aws_cognito_user_pool.pool.id} --username john@example.com --password 1qaz@WSX --permanent
+      # Add more commands for creating additional users if needed
+    EOT
+  }
+}
+
+*/
+
+#resource "aws_cognito_user" "example" {
+#  user_pool_id = aws_cognito_user_pool.pool.id
+#  username     = "example"
+
+#  attributes = {
+#    terraform      = true
+  #  foo            = "bar"
+#   email          = "no-reply@hashicorp.com"
+#    email_verified = true
+#  }
+#}
