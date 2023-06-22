@@ -1,1 +1,0 @@
-app_id = "https://4ltus1mx29.execute-api.us-east-1.amazonaws.com/undefined"
